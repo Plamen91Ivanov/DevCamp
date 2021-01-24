@@ -26,7 +26,7 @@ namespace MentorWorkTask
                 {
                     layerTwoCreating(layerTwo, layerOne);
 
-                    drawToConsole(layerTwo,input);
+                    drawingToConsole(layerTwo,input);
                 }
                 else
                 {
@@ -101,6 +101,7 @@ namespace MentorWorkTask
             {
                 var column = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
 
+                // validate numbers of column
                 if (column.Length != layerOne.GetLength(1))
                 {
                     break;
@@ -128,47 +129,64 @@ namespace MentorWorkTask
 
             var numbersOfBricks = new int[brickNumber];
 
+            //take number of bricks
             for (int i = 1; i <= brickNumber; i++)
             {
                 numbersOfBricks[i - 1] = i;
             }
-
+            //begin to fill the second layer 
             for (int r = 0; r < layerTwo.GetLength(0); r++)
             {
                 if (layerTwoAddedBricks == layerOne.Length / 2)
                 {
                     break;
                 }
+                //fill second layer and check where to put the bricks
                 for (int c = 0; c < layerTwo.GetLength(1); c++)
                 {
+                    //checks if a brick is already placed in the given position 
                     if (layerTwo[r, c] == 0)
                     {
+                        //take current number of first layer
                         currentNumber = layerOne[r, c];
 
+                        //is this is last column
                         if (c != layerTwo.GetLength(1) - 1)
                         {
+                            //take next column number
                             nextColNumber = layerOne[r, c + 1];
 
+                            //checks whether the current brick of the given position is the same as in the first layer
                             if (numbersOfBricks[number] == currentNumber)
                             {
+                                //checks if the brick in the next position is the same
                                 if (numbersOfBricks[number] == nextColNumber)
                                 {
+                                    //add halfbrick at current position 
                                     layerTwo[r, c] = numbersOfBricks[number];
+                                    // add next halfbrick in opposite direction , because the next one is the same
                                     layerTwo[r + 1, c] = numbersOfBricks[number];
-                                    number++;
+                                    //take next brick
+                                    number++; 
+                                    //some my tests
                                     layerTwoAddedBricks++;
                                 }
                                 else
                                 {
+                                    //add halfbrick at current position 
                                     layerTwo[r, c] = numbersOfBricks[number];
+                                    // add next halfbrick in next position
                                     layerTwo[r, c + 1] = numbersOfBricks[number];
+                                    //take next brick
                                     number++;
+                                    //skips the next column, because we already add second half of brick there
                                     c++;
                                     layerTwoAddedBricks++;
                                 }
                             }
                             else
                             {
+                                //check is this is last row
                                 if (r != layerOne.GetLength(0) - 1)
                                 {
                                     layerTwo[r, c] = numbersOfBricks[number];
@@ -221,11 +239,12 @@ namespace MentorWorkTask
             return layerTwo;
         }
 
-        static void drawToConsole(int[,] layerTwo, int[] input)
+        static void drawingToConsole(int[,] layerTwo, int[] input)
         {
-            for (int raw = 0; raw < layerTwo.GetLength(0); raw++)
+            for (int row = 0; row < layerTwo.GetLength(0); row++)
             {
-                if (raw == 0)
+                //drawing first line of *
+                if (row == 0)
                 {
                     for (int i = 0; i < (input[1] * 2) + 1; i++)
                     {
@@ -233,13 +252,16 @@ namespace MentorWorkTask
                     }
                     Console.WriteLine();
                 }
-                if (raw > 0)
+               
+                
+                if (row > 0)
                 {
+                    //check if brick is vertical don't draw * between parts of brick
                     for (int i = 1; i < (input[1] * 2) + 2; i++)
                     {
                         if (i % 2 == 0)
                         {
-                            if (layerTwo[raw - 1, (i / 2) - 1] == layerTwo[raw, (i / 2) - 1])
+                            if (layerTwo[row - 1, (i / 2) - 1] == layerTwo[row, (i / 2) - 1])
                             {
                                 Console.Write(" ");
                             }
@@ -255,40 +277,42 @@ namespace MentorWorkTask
                     }
                     Console.WriteLine();
                 }
-
+                //drawing bricks and * between them
                 for (int col = 0; col < layerTwo.GetLength(1); col++)
                 {
                     //check is this last column
                     if (col == layerTwo.GetLength(1) - 1)
                     {
-                        if (layerTwo[raw, col] == layerTwo[raw, col - 1])
+                        //if brick is horisontal draw a (" "-white space) between them
+                        if (layerTwo[row, col] == layerTwo[row, col - 1])
                         {
-                            Console.Write(" " + layerTwo[raw, col] + "*");
+                            Console.Write(" " + layerTwo[row, col] + "*");
                         }
                         else
                         {
-                            Console.Write("*" + layerTwo[raw, col] + "*");
+                            Console.Write("*" + layerTwo[row, col] + "*");
                         }
                     }
                     else if (col == 0)
                     {
-                        Console.Write("*" + layerTwo[raw, col]);
+                        Console.Write("*" + layerTwo[row, col]);
                     }
                     else
                     {
-                        if (layerTwo[raw, col] == layerTwo[raw, col - 1])
+                        if (layerTwo[row, col] == layerTwo[row, col - 1])
                         {
-                            Console.Write(" " + layerTwo[raw, col]);
+                            Console.Write(" " + layerTwo[row, col]);
                         }
-                        else if (layerTwo[raw, col] != layerTwo[raw, col - 1])
+                        else if (layerTwo[row, col] != layerTwo[row, col - 1])
                         {
-                            Console.Write("*" + layerTwo[raw, col]);
+                            Console.Write("*" + layerTwo[row, col]);
                         }
                     }
                 }
                 Console.WriteLine();
 
-                if (raw == layerTwo.GetLength(0) - 1)
+                //drawing last line of *
+                if (row == layerTwo.GetLength(0) - 1)
                 {
                     for (int i = 0; i < (input[1] * 2) + 1; i++)
                     {
