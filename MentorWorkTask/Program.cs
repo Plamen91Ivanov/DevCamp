@@ -189,15 +189,22 @@ namespace MentorWorkTask
                                 //check is this is last row
                                 if (r != layerOne.GetLength(0) - 1)
                                 {
+                                    //put current halfbrick at the current position
                                     layerTwo[r, c] = numbersOfBricks[number];
+                                    //put the second half of the brick on the bottom row
                                     layerTwo[r + 1, c] = numbersOfBricks[number];
+                                    //take next brick
                                     number++;
+                                    //some validation
                                     layerTwoAddedBricks++;
                                 }
                                 else
                                 {
+                                    //put current halfbrick at the current position
                                     layerTwo[r, c] = numbersOfBricks[number];
+                                    //put the second half of the brick on the next column
                                     layerTwo[r, c + 1] = numbersOfBricks[number];
+                                    //skips the next column, because we already add second half of brick there
                                     c++;
                                     number++;
                                 }
@@ -207,28 +214,42 @@ namespace MentorWorkTask
                         {
                             if (r != layerOne.GetLength(0) - 1)
                             {
+                                //take the bottom number
                                 nextRawNumber = layerOne[r + 1, c];
+                                //if the bottom number is different from the current one we can put the brick vertically
                                 if (numbersOfBricks[number] != nextRawNumber)
                                 {
+                                    //put half of brick in the current position
                                     layerTwo[r, c] = numbersOfBricks[number];
+                                    //put the next half in the bottom position
                                     layerTwo[r + 1, c] = numbersOfBricks[number];
                                     layerTwoAddedBricks++;
+                                    //take next brick
                                     number++;
                                 }
+                                //if the number at the current position is different from the current one we can put the brick vertically
                                 else if (numbersOfBricks[number] != currentNumber)
                                 {
+                                    //put half of brick in the current position
                                     layerTwo[r, c] = numbersOfBricks[number];
+                                    //put the next half in the bottom position
                                     layerTwo[r + 1, c] = numbersOfBricks[number];
                                     layerTwoAddedBricks++;
+                                    //take next brick
                                     number++;
                                 }
                                 else
                                 {
+                                    //if the number of the given position is the same as the current one, and the number of the next row at the current position is the same 
+                                    //swap the previus brick with the current one 
+
+                                    //take the previous  brick and put it in the current position
                                     layerTwo[r, c] = numbersOfBricks[number - 1];
                                     layerTwo[r + 1, c] = numbersOfBricks[number - 1];
-
+                                    //put the current brick in the position of previous  one
                                     layerTwo[r, c - 1] = numbersOfBricks[number];
                                     layerTwo[r + 1, c - 1] = numbersOfBricks[number];
+                                    //take next brick
                                     number++;
                                 }
                             }
@@ -283,7 +304,7 @@ namespace MentorWorkTask
                     //check is this last column
                     if (col == layerTwo.GetLength(1) - 1)
                     {
-                        //if brick is horisontal draw a (" "-white space) between them
+                        //if brick is horisontal draw a (" "-white space) between the two halves
                         if (layerTwo[row, col] == layerTwo[row, col - 1])
                         {
                             Console.Write(" " + layerTwo[row, col] + "*");
